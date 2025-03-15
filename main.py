@@ -53,15 +53,14 @@ DogVsCat_model = load_model(DogVsCat_model_path, compile=False, safe_mode=False)
 class_labels = [0, 1]
 
 class DiabetesData(BaseModel):
-    Age: int
-    Sex: int
-    Hypertension: int
-    Heart_disease: int
-    Smoking_history: int
-    Bmi: int
+    gender: int
+    age: int
+    hypertension: int
+    heart_disease: int
+    smoking_history: int
+    bmi: int
     HbA1c_level: int
-    Blood_glucose_level: int
-    Diabetes: int
+    blood_glucose_level: int
 
 class ImageData(BaseModel):
     image_base64: str
@@ -69,16 +68,16 @@ class ImageData(BaseModel):
 # ทำนายภาวะหัวใจ (KNN)
 @app.post("/predict/KNN") 
 def predict_Disease_knn(data: DiabetesData):
-    input_data = np.array([[data.Age, data.Sex, data.Hypertension, data.Heart_disease, data.Smoking_history,
-                            data.Bmi, data.HbA1c_level, data.Blood_glucose_level, data.Diabetes]])
+    input_data = np.array([[data.gender, data.age, data.hypertension, data.heart_disease, data.smoking_history,
+                            data.bmi, data.HbA1c_level, data.blood_glucose_level]])
     prediction = knn_model.predict(input_data)[0]
     return {"result": "High Risk" if prediction == 1 else "Low Risk"}
 
 # ทำนายภาวะหัวใจ (SVM)
 @app.post("/predict/SVM") 
 def predict_Disease_svm(data: DiabetesData):
-    input_data = np.array([[data.Age, data.Sex, data.Hypertension, data.Heart_disease, data.Smoking_history,
-                            data.Bmi, data.HbA1c_level, data.Blood_glucose_level, data.Diabetes]])
+    input_data = np.array([[data.gender, data.age, data.hypertension, data.heart_disease, data.smoking_history,
+                            data.bmi, data.HbA1c_level, data.blood_glucose_level]])
     prediction = svm_model.predict(input_data)[0]
     return {"result": "High Risk" if prediction == 1 else "Low Risk"}
 
